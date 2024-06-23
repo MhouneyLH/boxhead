@@ -42,6 +42,19 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        rigidbody.MovePosition(rigidbody.position + speed * Time.fixedDeltaTime * (Vector3)movementDirection);
+        rigidbody.velocity = movementDirection * speed;
+        Rotate();
+    }
+
+    void Rotate()
+    {
+        // don't change rotation if the player is not moving
+        if (movementDirection == Vector2.zero)
+        {
+            return;
+        }
+
+        float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
     }
 }
