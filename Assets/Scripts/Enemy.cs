@@ -12,6 +12,21 @@ public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] float _health = 30.0f;
     [SerializeField] float _damage = 5.0f;
+    [SerializeField] int _scorePoints = 10;
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<Enemy>() != null)
+        {
+            return;
+        }
+
+        if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+        {
+            damageable.TakeDamage(_damage);
+            return;
+        }
+    }
 
     public void TakeDamage(float damage)
     {
@@ -19,6 +34,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
         if (_health <= 0.0f)
         {
+            GameManager.Instance.AddScore(_scorePoints);
             Die();
         }
     }

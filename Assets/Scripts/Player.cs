@@ -38,6 +38,7 @@ public class Player : MonoBehaviour, IDamageable
         if (_health <= 0.0f)
         {
             Die();
+            GameManager.Instance.ResetGame();
         }
     }
 

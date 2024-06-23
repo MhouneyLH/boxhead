@@ -6,23 +6,29 @@ using UnityEngine;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
 
-    [SerializeField] TMP_Text scoreText;
-    [SerializeField] TMP_Text roundText;
+    [Header("Controller")]
+    [SerializeField] Spawner _spawner;
+
+    [Header("UI")]
+    [SerializeField] TMP_Text _scoreText;
+    [SerializeField] TMP_Text _roundText;
 
     int currentScore = 0;
     int currentRound = 0;
 
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
 
-        AddScore(0);
-        NextRound();
+        UpdateScoreText();
+        UpdateRoundText();
+
+        _spawner.StartSpawning();
     }
 
     /// <summary>
@@ -32,7 +38,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int score)
     {
         currentScore += score;
-        scoreText.text = currentScore.ToString();
+        UpdateScoreText();
     }
 
     /// <summary>
@@ -41,6 +47,33 @@ public class GameManager : MonoBehaviour
     public void NextRound()
     {
         currentRound++;
-        roundText.text = "Round: " + currentRound;
+        UpdateRoundText();
+    }
+
+    /// <summary>
+    /// Resets the game state.
+    /// </summary>
+    /// <remarks>
+    /// This method is called when the player dies.
+    public void ResetGame()
+    {
+        _spawner.Reset();
+
+        currentScore = 0;
+        currentRound = 0;
+        UpdateScoreText();
+        UpdateRoundText();
+
+        _spawner.StartSpawning();
+    }
+
+    void UpdateScoreText()
+    {
+        _scoreText.text = currentScore.ToString();
+    }
+
+    void UpdateRoundText()
+    {
+        _roundText.text = "Round: " + currentRound;
     }
 }
