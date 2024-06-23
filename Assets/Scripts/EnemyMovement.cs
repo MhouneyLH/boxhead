@@ -33,8 +33,6 @@ public class EnemyMovement : MonoBehaviour
     void Move(Vector3 direction)
     {
         rigidbody.velocity = _speed * direction;
-        // rigidbody.MovePosition(transform.position + _speed * Time.fixedDeltaTime * direction);
-        // transform.Translate(_speed * Time.fixedDeltaTime * direction);
     }
 
     void Rotate(Vector3 direction)

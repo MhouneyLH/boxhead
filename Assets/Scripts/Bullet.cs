@@ -1,36 +1,39 @@
 using Boxhead.Interfaces;
 using UnityEngine;
 
-/// <summary>
-/// Represents a bullet that can be shot from a player.
-/// </summary>
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
-public class Bullet : MonoBehaviour, IProjectile
+namespace Boxhead
 {
-    [SerializeField] float _speed = 10.0f;
-    [SerializeField] float _damage = 10.0f;
-
-    public void Launch(Vector3 direction)
+    /// <summary>
+    /// Represents a bullet that can be shot from a player.
+    /// </summary>
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Collider))]
+    public class Bullet : MonoBehaviour, IProjectile
     {
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.velocity = _speed * direction;
-    }
+        [SerializeField] float _speed = 10.0f;
+        [SerializeField] float _damage = 10.0f;
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<Player>())
+        public void Launch(Vector3 direction)
         {
-            return;
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            rigidbody.velocity = _speed * direction;
         }
 
-        if (other.TryGetComponent<IDamageable>(out var damageable))
+        void OnTriggerEnter(Collider other)
         {
-            damageable.TakeDamage(_damage);
-            Destroy(gameObject);
-            return;
-        }
+            if (other.GetComponent<Player>())
+            {
+                return;
+            }
 
-        Debug.Log($"Bullet flying through Collider: {other.name}");
+            if (other.TryGetComponent<IDamageable>(out var damageable))
+            {
+                damageable.TakeDamage(_damage);
+                Destroy(gameObject);
+                return;
+            }
+
+            Debug.Log($"Bullet flying through Collider: {other.name}");
+        }
     }
 }

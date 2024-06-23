@@ -1,45 +1,48 @@
 using Boxhead.Interfaces;
 using UnityEngine;
 
-/// <summary>
-/// Represents an enemy.
-/// Could be a zombie, a soldier, a robot, etc.
-/// </summary>
-[RequireComponent(typeof(EnemyMovement))]
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
-public class Enemy : MonoBehaviour, IDamageable
+namespace Boxhead
 {
-    [SerializeField] float _health = 30.0f;
-    [SerializeField] float _damage = 5.0f;
-    [SerializeField] int _scorePoints = 10;
-
-    void OnCollisionEnter(Collision collision)
+    /// <summary>
+    /// Represents an enemy.
+    /// Could be a zombie, a soldier, a robot, etc.
+    /// </summary>
+    [RequireComponent(typeof(EnemyMovement))]
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Collider))]
+    public class Enemy : MonoBehaviour, IDamageable
     {
-        if (collision.gameObject.layer == gameObject.layer)
+        [SerializeField] float _health = 30.0f;
+        [SerializeField] float _damage = 5.0f;
+        [SerializeField] int _scorePoints = 10;
+
+        void OnCollisionEnter(Collision collision)
         {
-            return;
+            if (collision.gameObject.layer == gameObject.layer)
+            {
+                return;
+            }
+
+            if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(_damage);
+            }
         }
 
-        if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+        public void TakeDamage(float damage)
         {
-            damageable.TakeDamage(_damage);
+            _health -= damage;
+
+            if (_health <= 0.0f)
+            {
+                GameManager.Instance.AddScore(_scorePoints);
+                Die();
+            }
         }
-    }
 
-    public void TakeDamage(float damage)
-    {
-        _health -= damage;
-
-        if (_health <= 0.0f)
+        void Die()
         {
-            GameManager.Instance.AddScore(_scorePoints);
-            Die();
+            Destroy(gameObject);
         }
-    }
-
-    void Die()
-    {
-        Destroy(gameObject);
     }
 }

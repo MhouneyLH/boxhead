@@ -8,11 +8,17 @@ namespace Boxhead
     /// </summary>
     public class InputSystemManager : MonoBehaviour
     {
-        public static GameSceneActions GameSceneActions;
+        public static InputSystemManager Instance;
+
+        public GameSceneActions GameSceneActions;
 
         void Awake()
         {
-            GameSceneActions = new GameSceneActions();
+            if (Instance == null)
+            {
+                GameSceneActions = new GameSceneActions();
+                Instance = this;
+            }
         }
 
         void Start()
@@ -28,6 +34,15 @@ namespace Boxhead
         void DisableAllActions()
         {
             GameSceneActions.Disable();
+        }
+
+        public void test123()
+        {
+            foreach (var action in GameSceneActions.Player.Shoot.bindings)
+            {
+                Debug.Log(action.ToString());
+                Debug.Log(action.action.ToString());
+            }
         }
     }
 }
