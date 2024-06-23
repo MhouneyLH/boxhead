@@ -19,6 +19,11 @@ public class Bullet : MonoBehaviour, IProjectile
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.GetComponent<Player>())
+        {
+            return;
+        }
+
         if (other.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(_damage);

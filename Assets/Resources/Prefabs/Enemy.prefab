@@ -817,9 +817,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6120384670727995871}
-  - component: {fileID: 4291744728218476760}
+  - component: {fileID: 4303035751712930966}
   - component: {fileID: 256297915995532776}
   - component: {fileID: -5230216465808813019}
+  - component: {fileID: 8875955463706156112}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -844,8 +845,8 @@ Transform:
   - {fileID: 6069002779839503392}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &4291744728218476760
-MeshCollider:
+--- !u!65 &4303035751712930966
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -859,13 +860,12 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 0.5979365, y: 0.5416475, z: 1.0884537}
+  m_Center: {x: -0.020103157, y: 0.14072224, z: -0.574951}
 --- !u!54 &256297915995532776
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -905,9 +905,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a3f98d40b481294e88bb906409687ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
-  speed: 1
-  damage: 5
+  _health: 30
+  _damage: 5
+--- !u!114 &8875955463706156112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813007833145150738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e4957e6977e3c40b075db51d7e43a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 1
 --- !u!1 &8142013969972146772
 GameObject:
   m_ObjectHideFlags: 0
