@@ -1,6 +1,9 @@
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Manages the game state and UI.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -22,12 +25,19 @@ public class GameManager : MonoBehaviour
         NextRound();
     }
 
+    /// <summary>
+    /// Adds the score to the current score and updates the UI.
+    /// </summary>
+    /// <param name="score">The score to add.</param>
     public void AddScore(int score)
     {
         currentScore += score;
         scoreText.text = currentScore.ToString();
     }
 
+    /// <summary>
+    /// Increments the current round and updates the UI.
+    /// </summary>
     public void NextRound()
     {
         currentRound++;
