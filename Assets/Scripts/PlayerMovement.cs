@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float speed = 5.0f;
+    [SerializeField] float _speed = 5.0f;
 
     new Rigidbody rigidbody;
     Vector2 movementDirection = Vector2.zero;
@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        rigidbody.velocity = movementDirection * speed;
+        rigidbody.velocity = movementDirection * _speed;
         Rotate();
     }
 
@@ -56,5 +56,10 @@ public class PlayerMovement : MonoBehaviour
 
         float angle = Mathf.Atan2(movementDirection.y, movementDirection.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
+    }
+
+    public Vector2 GetMovementDirection()
+    {
+        return movementDirection;
     }
 }

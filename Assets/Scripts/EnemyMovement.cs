@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] float speed = 1.0f;
+    [SerializeField] float _speed = 1.0f;
 
     const string PLAYER_TAG = "Player";
 
@@ -25,7 +25,7 @@ public class EnemyMovement : MonoBehaviour
     void Move()
     {
         Vector3 direction = GetDirectionToPlayer();
-        rigidbody.velocity = direction * speed;
+        rigidbody.velocity = direction * _speed;
         Rotate(direction);
     }
 

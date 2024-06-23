@@ -184,8 +184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 556d485fc1a6c99419155aeb77148bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  damage: 10
+  _health: 100
+  _bulletPrefab: {fileID: 1734246012772688483, guid: 0d67467d5dbb8d7439ecad42d14efc01, type: 3}
+  _weapon: {fileID: 531862269318269828}
 --- !u!114 &2208970480680489352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bd623271e06fd48915a753e16d3775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  _speed: 5
 --- !u!1 &8811887033139707663
 GameObject:
   m_ObjectHideFlags: 0

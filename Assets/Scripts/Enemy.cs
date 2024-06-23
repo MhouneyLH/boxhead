@@ -6,16 +6,18 @@ using UnityEngine;
 /// Could be a zombie, a soldier, a robot, etc.
 /// </summary>
 [RequireComponent(typeof(EnemyMovement))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class Enemy : MonoBehaviour, IDamageable
 {
-    [SerializeField] float health = 30.0f;
-    [SerializeField] float damage = 5.0f;
+    [SerializeField] float _health = 30.0f;
+    [SerializeField] float _damage = 5.0f;
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
+        _health -= damage;
 
-        if (health <= 0.0f)
+        if (_health <= 0.0f)
         {
             Die();
         }
