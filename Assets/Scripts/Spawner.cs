@@ -49,7 +49,7 @@ public class Spawner : MonoBehaviour
 
         yield return new WaitForSeconds(SPAWN_INTERVAL_IN_S);
 
-        enemiesToSpawnCount *= 2;
+        // enemiesToSpawnCount *= 2;
         StartCoroutine(SpawnEnemies());
     }
 

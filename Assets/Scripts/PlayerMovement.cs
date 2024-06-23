@@ -42,7 +42,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-        rigidbody.velocity = movementDirection * _speed;
+        rigidbody.velocity = _speed * movementDirection;
+        // rigidbody.MovePosition(transform.position + _speed * Time.fixedDeltaTime * (Vector3)movementDirection);
+        // transform.position += _speed * Time.fixedDeltaTime * (Vector3)movementDirection;
         Rotate();
     }
 

@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<Enemy>() != null)
+        if (collision.gameObject.layer == gameObject.layer)
         {
             return;
         }
@@ -24,7 +24,6 @@ public class Enemy : MonoBehaviour, IDamageable
         if (collision.gameObject.TryGetComponent(out IDamageable damageable))
         {
             damageable.TakeDamage(_damage);
-            return;
         }
     }
 
