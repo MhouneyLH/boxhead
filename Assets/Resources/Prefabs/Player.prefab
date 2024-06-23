@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8557724520314521448}
   m_Layer: 0
-  m_Name: Police
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
