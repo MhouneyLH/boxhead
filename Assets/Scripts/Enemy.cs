@@ -5,10 +5,10 @@ using UnityEngine;
 /// Represents an enemy.
 /// Could be a zombie, a soldier, a robot, etc.
 /// </summary>
+[RequireComponent(typeof(EnemyMovement))]
 public class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] float health = 30.0f;
-    [SerializeField] float speed = 1.0f;
     [SerializeField] float damage = 5.0f;
 
     public void TakeDamage(float damage)
