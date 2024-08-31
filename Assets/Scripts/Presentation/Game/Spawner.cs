@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Boxhead.Presentation
+namespace Boxhead.Presentation.Game
 {
     /// <summary>
     /// Spawns the player and enemies.

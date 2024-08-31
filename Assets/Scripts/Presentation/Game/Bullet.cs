@@ -1,7 +1,7 @@
-using Boxhead.Presentation.Interfaces;
+using Boxhead.Presentation.Game.Interfaces;
 using UnityEngine;
 
-namespace Boxhead.Presentation
+namespace Boxhead.Presentation.Game
 {
     /// <summary>
     /// Represents a bullet that can be shot from a player.

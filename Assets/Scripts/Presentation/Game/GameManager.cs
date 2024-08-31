@@ -1,24 +1,27 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-namespace Boxhead.Presentation
+namespace Boxhead.Presentation.Game
 {
     /// <summary>
     /// Manages the game state and UI.
     /// </summary>
     public class GameManager : MonoBehaviour
     {
-        public static GameManager Instance;
-
         [Header("Controller")]
-        [SerializeField] Spawner _spawner;
+        [SerializeField] Spawner spawner;
 
         [Header("UI")]
-        [SerializeField] TMP_Text _scoreText;
-        [SerializeField] TMP_Text _roundText;
+        [SerializeField] TMP_Text scoreText;
+        [SerializeField] TMP_Text roundText;
 
-        int currentScore = 0;
-        int currentRound = 0;
+        public static GameManager Instance { get; private set; }
+
+        int _currentScore = 0;
+        int _currentRound = 0;
+
+        private const string START_MENU_SCENE_NAME = "StartMenuScene";
 
         private void Awake()
         {
@@ -30,7 +33,7 @@ namespace Boxhead.Presentation
             UpdateScoreText();
             UpdateRoundText();
 
-            _spawner.StartSpawning();
+            spawner.StartSpawning();
         }
 
         /// <summary>
@@ -39,7 +42,7 @@ namespace Boxhead.Presentation
         /// <param name="score">The score to add.</param>
         public void AddScore(int score)
         {
-            currentScore += score;
+            _currentScore += score;
             UpdateScoreText();
         }
 
@@ -48,7 +51,7 @@ namespace Boxhead.Presentation
         /// </summary>
         public void NextRound()
         {
-            currentRound++;
+            _currentRound++;
             UpdateRoundText();
         }
 
@@ -57,26 +60,21 @@ namespace Boxhead.Presentation
         /// </summary>
         /// <remarks>
         /// This method is called when the player dies.
+        /// </remarks>
         public void ResetGame()
         {
-            _spawner.Reset();
+            // todo: I don't know if this state reset is needed at all
+            spawner.Reset();
 
-            currentScore = 0;
-            currentRound = 0;
+            _currentScore = 0;
+            _currentRound = 0;
             UpdateScoreText();
             UpdateRoundText();
 
-            _spawner.StartSpawning();
+            SceneManager.LoadSceneAsync(START_MENU_SCENE_NAME);
         }
 
-        private void UpdateScoreText()
-        {
-            _scoreText.text = currentScore.ToString();
-        }
-
-        private void UpdateRoundText()
-        {
-            _roundText.text = "Round: " + currentRound;
-        }
+        private void UpdateScoreText() => scoreText.text = _currentScore.ToString();
+        private void UpdateRoundText() => roundText.text = "Round: " + _currentRound;
     }
 }

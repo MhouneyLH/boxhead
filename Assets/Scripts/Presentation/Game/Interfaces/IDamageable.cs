@@ -1,4 +1,4 @@
-namespace Boxhead.Presentation.Interfaces
+namespace Boxhead.Presentation.Game.Interfaces
 {
     /// <summary>
     /// Represents an object that can take damage. (e. g. the player, an enemy, a destructible object, etc.)

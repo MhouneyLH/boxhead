@@ -1,7 +1,7 @@
-using Boxhead.Presentation.Interfaces;
+using Boxhead.Presentation.Game.Interfaces;
 using UnityEngine;
 
-namespace Boxhead.Presentation.Enemy
+namespace Boxhead.Presentation.Game.Enemy
 {
     /// <summary>
     /// Represents an enemy.

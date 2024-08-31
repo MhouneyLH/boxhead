@@ -2,7 +2,7 @@ using Boxhead.Presentation.InputSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Boxhead.Presentation.Player
+namespace Boxhead.Presentation.Game.Player
 {
     /// <summary>
     /// Responsible for moving the player.

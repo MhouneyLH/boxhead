@@ -991,9 +991,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b77d1940379aab48927012f29873422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 1250634656}
-  _scoreText: {fileID: 1107742702}
-  _roundText: {fileID: 587226246}
+  spawner: {fileID: 1250634656}
+  scoreText: {fileID: 1107742702}
+  roundText: {fileID: 587226246}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

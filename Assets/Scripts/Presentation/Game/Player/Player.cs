@@ -1,9 +1,9 @@
 using Boxhead.Presentation.InputSystem;
-using Boxhead.Presentation.Interfaces;
+using Boxhead.Presentation.Game.Interfaces;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Boxhead.Presentation.Player
+namespace Boxhead.Presentation.Game.Player
 {
     /// <summary>
     /// Represents the player.

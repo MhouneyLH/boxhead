@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Boxhead.Presentation.Enemy
+namespace Boxhead.Presentation.Game.Enemy
 {
     /// <summary>
     /// Responsible for moving enemies towards the player.
