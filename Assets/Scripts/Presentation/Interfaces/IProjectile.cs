@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Boxhead.Interfaces
+namespace Boxhead.Presentation.Interfaces
 {
     /// <summary>
     /// Represents an object that can be launched. (e. g. bullet)

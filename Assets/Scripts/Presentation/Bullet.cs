@@ -1,7 +1,7 @@
-using Boxhead.Interfaces;
+using Boxhead.Presentation.Interfaces;
 using UnityEngine;
 
-namespace Boxhead
+namespace Boxhead.Presentation
 {
     /// <summary>
     /// Represents a bullet that can be shot from a player.
@@ -10,25 +10,25 @@ namespace Boxhead
     [RequireComponent(typeof(Collider))]
     public class Bullet : MonoBehaviour, IProjectile
     {
-        [SerializeField] float _speed = 10.0f;
-        [SerializeField] float _damage = 10.0f;
+        [SerializeField] float speed = 10.0f;
+        [SerializeField] float damage = 10.0f;
 
         public void Launch(Vector3 direction)
         {
             Rigidbody rigidbody = GetComponent<Rigidbody>();
-            rigidbody.velocity = _speed * direction;
+            rigidbody.velocity = speed * direction;
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<Player>())
+            if (other.GetComponent<Player.Player>())
             {
                 return;
             }
 
             if (other.TryGetComponent<IDamageable>(out var damageable))
             {
-                damageable.TakeDamage(_damage);
+                damageable.TakeDamage(damage);
                 Destroy(gameObject);
                 return;
             }

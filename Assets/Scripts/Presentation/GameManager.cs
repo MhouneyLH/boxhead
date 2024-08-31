@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Boxhead
+namespace Boxhead.Presentation
 {
     /// <summary>
     /// Manages the game state and UI.
@@ -20,7 +20,7 @@ namespace Boxhead
         int currentScore = 0;
         int currentRound = 0;
 
-        void Awake()
+        private void Awake()
         {
             if (Instance == null)
             {
@@ -69,12 +69,12 @@ namespace Boxhead
             _spawner.StartSpawning();
         }
 
-        void UpdateScoreText()
+        private void UpdateScoreText()
         {
             _scoreText.text = currentScore.ToString();
         }
 
-        void UpdateRoundText()
+        private void UpdateRoundText()
         {
             _roundText.text = "Round: " + currentRound;
         }

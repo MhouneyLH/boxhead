@@ -1,9 +1,9 @@
-using Boxhead;
-using Boxhead.Interfaces;
+using Boxhead.Presentation.InputSystem;
+using Boxhead.Presentation.Interfaces;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Boxhead
+namespace Boxhead.Presentation.Player
 {
     /// <summary>
     /// Represents the player.
@@ -14,42 +14,39 @@ namespace Boxhead
     [RequireComponent(typeof(Collider))]
     public class Player : MonoBehaviour, IDamageable
     {
-        [SerializeField] float _health = 100.0f;
-        [SerializeField] GameObject _bulletPrefab;
-        [SerializeField] GameObject _weapon;
+        [SerializeField] private float health = 100.0f;
+        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private GameObject weapon;
 
-        void OnEnable()
+        private void OnEnable()
         {
             // HINT: always take the CallbackContext as parameter for the method
             // otherwise the event won't get unsubscribed properly :( (Unity Bug?)
             InputSystemManager.Instance.GameSceneActions.Player.Shoot.performed += Shoot;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InputSystemManager.Instance.GameSceneActions.Player.Shoot.performed -= Shoot;
         }
 
-        void Shoot(InputAction.CallbackContext context)
+        private void Shoot(InputAction.CallbackContext context)
         {
-            GameObject bullet = Instantiate(_bulletPrefab, _weapon.transform.position, _weapon.transform.rotation);
+            GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
             bullet.GetComponent<IProjectile>().Launch(transform.up);
         }
 
         public void TakeDamage(float damage)
         {
-            _health -= damage;
+            health -= damage;
 
-            if (_health <= 0.0f)
+            if (health <= 0.0f)
             {
                 Die();
                 GameManager.Instance.ResetGame();
             }
         }
 
-        void Die()
-        {
-            Destroy(gameObject);
-        }
+        private void Die() => Destroy(gameObject);
     }
 }

@@ -1,7 +1,7 @@
-using Boxhead.Interfaces;
+using Boxhead.Presentation.Interfaces;
 using UnityEngine;
 
-namespace Boxhead
+namespace Boxhead.Presentation.Enemy
 {
     /// <summary>
     /// Represents an enemy.
@@ -12,11 +12,11 @@ namespace Boxhead
     [RequireComponent(typeof(Collider))]
     public class Enemy : MonoBehaviour, IDamageable
     {
-        [SerializeField] float _health = 30.0f;
-        [SerializeField] float _damage = 5.0f;
-        [SerializeField] int _scorePoints = 10;
+        [SerializeField] private float health = 30.0f;
+        [SerializeField] private float damage = 5.0f;
+        [SerializeField] private int scorePoints = 10;
 
-        void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.layer == gameObject.layer)
             {
@@ -25,24 +25,21 @@ namespace Boxhead
 
             if (collision.gameObject.TryGetComponent(out IDamageable damageable))
             {
-                damageable.TakeDamage(_damage);
+                damageable.TakeDamage(damage);
             }
         }
 
         public void TakeDamage(float damage)
         {
-            _health -= damage;
+            health -= damage;
 
-            if (_health <= 0.0f)
+            if (health <= 0.0f)
             {
-                GameManager.Instance.AddScore(_scorePoints);
+                GameManager.Instance.AddScore(scorePoints);
                 Die();
             }
         }
 
-        void Die()
-        {
-            Destroy(gameObject);
-        }
+        private void Die() => Destroy(gameObject);
     }
 }
