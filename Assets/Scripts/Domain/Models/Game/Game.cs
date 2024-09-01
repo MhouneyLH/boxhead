@@ -4,9 +4,6 @@ using Supabase.Postgrest.Models;
 
 namespace Boxhead.Domain.Models
 {
-    /// <summary>
-    /// Represents a game.
-    /// </summary>
     [Table("games")]
     public class Game : BaseModel
     {

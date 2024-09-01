@@ -22,7 +22,7 @@ namespace Boxhead.Infrastructure
             }
             catch (Supabase.Postgrest.Exceptions.PostgrestException e)
             {
-                throw new System.Exception("Failed to get games", e);
+                throw new System.Exception("Getting all games in infrastructure layer: " + e.Message, e);
             }
         }
 
@@ -36,7 +36,7 @@ namespace Boxhead.Infrastructure
             }
             catch (Supabase.Postgrest.Exceptions.PostgrestException e)
             {
-                throw new System.Exception("Failed to save game" + e.Content + e.Message, e);
+                throw new System.Exception("Saving game in infrastructure layer: " + e.Message, e);
             }
         }
     }

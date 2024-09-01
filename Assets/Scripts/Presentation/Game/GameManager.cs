@@ -42,7 +42,7 @@ namespace Boxhead.Presentation.Game
         /// <param name="score">The score to add.</param>
         public void AddScore(int score)
         {
-            // _gameData = _gameData with { Score = _gameData.Score + score };
+            _gameData = _gameData with { Score = _gameData.Score + score };
             UpdateScoreText();
         }
 
@@ -51,14 +51,12 @@ namespace Boxhead.Presentation.Game
         /// </summary>
         public void NextRound()
         {
-            // _gameData = _gameData with { Round = _gameData.Round + 1 };
+            _gameData = _gameData with { Round = _gameData.Round + 1 };
             UpdateRoundText();
         }
 
         public void ResetGame() => SceneManager.LoadSceneAsync(START_MENU_SCENE_NAME);
-        // private void UpdateScoreText() => scoreText.text = _gameData.Score.ToString();
-        private void UpdateScoreText() => scoreText.text = "0";
-        // private void UpdateRoundText() => roundText.text = "Round: " + _gameData.Round.ToString();
-        private void UpdateRoundText() => roundText.text = "Round: " + "0";
+        private void UpdateScoreText() => scoreText.text = _gameData.Score.ToString();
+        private void UpdateRoundText() => roundText.text = "Round: " + _gameData.Round.ToString();
     }
 }

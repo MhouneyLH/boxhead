@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using Boxhead.Domain.Models;
+using Boxhead.Domain.Repositories;
 using Boxhead.Infrastructure;
 using CandyCoded.env;
 using Supabase;
@@ -33,20 +36,32 @@ namespace Boxhead.Presentation.StartMenu
             await supabase.InitializeAsync();
 
             ICloudGameDatasource cloudGameDatasource = new SupabaseCloudGameDatasource(supabase);
-            Domain.Models.Game game = new(Guid.NewGuid(), DateTime.Now, new Domain.Models.GameData(0, 0));
+            IGameRepository gameRepository = new GameRepositoryImpl(cloudGameDatasource);
 
-            try
+            int randomScore = UnityEngine.Random.Range(0, 100);
+            int randomRound = UnityEngine.Random.Range(0, 100);
+            Domain.Models.Game newGame = new(Guid.NewGuid(), DateTime.Now, new GameData(randomScore, randomRound));
+
+            // var savedGame = await gameRepository.SaveGame(newGame);
+            // if (savedGame.IsFailure)
+            // {
+            //     Debug.LogError(savedGame.Error.Message);
+            //     return;
+            // }
+
+            // Debug.Log($"Game saved: {savedGame.Value.Id}");
+
+
+            var games = await gameRepository.GetAllGames();
+            if (games.IsFailure)
             {
-                var reseult = await cloudGameDatasource.SaveGame(game);
-                var games = await cloudGameDatasource.GetAllGames();
-                foreach (var g in games)
-                {
-                    Debug.Log(g.Id);
-                }
+                Debug.LogError(games.Error.Message);
+                return;
             }
-            catch (Exception e)
+
+            foreach (var game in games.Value)
             {
-                Debug.LogError(e.Message);
+                Debug.Log($"Game: {game.Id} -> {game.Data.Score}, {game.Data.Round}");
             }
         }
 
