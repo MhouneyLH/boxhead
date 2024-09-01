@@ -1,3 +1,4 @@
+using Boxhead.Domain.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,8 +19,7 @@ namespace Boxhead.Presentation.Game
 
         public static GameManager Instance { get; private set; }
 
-        int _currentScore = 0;
-        int _currentRound = 0;
+        private GameData _gameData = new(0, 0);
 
         private const string START_MENU_SCENE_NAME = "StartMenuScene";
 
@@ -42,7 +42,7 @@ namespace Boxhead.Presentation.Game
         /// <param name="score">The score to add.</param>
         public void AddScore(int score)
         {
-            _currentScore += score;
+            // _gameData = _gameData with { Score = _gameData.Score + score };
             UpdateScoreText();
         }
 
@@ -51,30 +51,14 @@ namespace Boxhead.Presentation.Game
         /// </summary>
         public void NextRound()
         {
-            _currentRound++;
+            // _gameData = _gameData with { Round = _gameData.Round + 1 };
             UpdateRoundText();
         }
 
-        /// <summary>
-        /// Resets the game state.
-        /// </summary>
-        /// <remarks>
-        /// This method is called when the player dies.
-        /// </remarks>
-        public void ResetGame()
-        {
-            // todo: I don't know if this state reset is needed at all
-            spawner.Reset();
-
-            _currentScore = 0;
-            _currentRound = 0;
-            UpdateScoreText();
-            UpdateRoundText();
-
-            SceneManager.LoadSceneAsync(START_MENU_SCENE_NAME);
-        }
-
-        private void UpdateScoreText() => scoreText.text = _currentScore.ToString();
-        private void UpdateRoundText() => roundText.text = "Round: " + _currentRound;
+        public void ResetGame() => SceneManager.LoadSceneAsync(START_MENU_SCENE_NAME);
+        // private void UpdateScoreText() => scoreText.text = _gameData.Score.ToString();
+        private void UpdateScoreText() => scoreText.text = "0";
+        // private void UpdateRoundText() => roundText.text = "Round: " + _gameData.Round.ToString();
+        private void UpdateRoundText() => roundText.text = "Round: " + "0";
     }
 }
