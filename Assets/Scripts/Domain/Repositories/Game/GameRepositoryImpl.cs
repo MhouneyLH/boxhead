@@ -8,6 +8,7 @@ using CSharpFunctionalExtensions;
 
 namespace Boxhead.Domain.Repositories
 {
+    /// <inheritdoc cref="IGameRepository"/>
     public class GameRepositoryImpl : IGameRepository
     {
         private readonly ICloudGameDatasource _cloudGameDatasource;
@@ -22,7 +23,7 @@ namespace Boxhead.Domain.Repositories
                 var games = await _cloudGameDatasource.GetAllGames();
                 return Result.Success<List<Game>, Error>(games.ToList());
             }
-            catch (System.Exception e)
+            catch (CloudException e)
             {
                 return Result.Failure<List<Game>, Error>(Error.Create("Failed to get games", e.Message));
             }
@@ -35,9 +36,22 @@ namespace Boxhead.Domain.Repositories
                 var savedGame = await _cloudGameDatasource.SaveGame(game);
                 return Result.Success<Game, Error>(savedGame);
             }
-            catch (System.Exception e)
+            catch (CloudException e)
             {
                 return Result.Failure<Game, Error>(Error.Create("Failed to save game", e.Message));
+            }
+        }
+
+        public async Task<IResult<Error>> DeleteGame(Game game)
+        {
+            try
+            {
+                await _cloudGameDatasource.DeleteGame(game);
+                return Result.Success(null as Error);
+            }
+            catch (CloudException e)
+            {
+                return Result.Failure<Error>("Failed to delete game" + e.Message);
             }
         }
     }

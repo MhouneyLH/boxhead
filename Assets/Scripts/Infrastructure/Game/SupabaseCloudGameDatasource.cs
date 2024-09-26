@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Boxhead.Common;
 using Boxhead.Domain.Models;
 
 namespace Boxhead.Infrastructure
 {
+    /// <inheritdoc cref="ICloudGameDatasource"/>
     public class SupabaseCloudGameDatasource : ICloudGameDatasource
     {
         private readonly Supabase.Client _supabaseClient;
@@ -22,7 +24,7 @@ namespace Boxhead.Infrastructure
             }
             catch (Supabase.Postgrest.Exceptions.PostgrestException e)
             {
-                throw new System.Exception("Getting all games in infrastructure layer: " + e.Message, e);
+                throw new CloudException("Getting all games in infrastructure layer: " + e.Message, e);
             }
         }
 
@@ -36,7 +38,21 @@ namespace Boxhead.Infrastructure
             }
             catch (Supabase.Postgrest.Exceptions.PostgrestException e)
             {
-                throw new System.Exception("Saving game in infrastructure layer: " + e.Message, e);
+                throw new CloudException("Saving game in infrastructure layer: " + e.Message, e);
+            }
+        }
+
+        public async Task DeleteGame(Game game)
+        {
+            try
+            {
+                await _supabaseClient.From<Game>()
+                                     .Where(x => x.Id == game.Id)
+                                     .Delete();
+            }
+            catch (Supabase.Postgrest.Exceptions.PostgrestException e)
+            {
+                throw new CloudException("Deleting game in infrastructure layer: " + e.Message, e);
             }
         }
     }

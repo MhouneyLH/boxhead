@@ -28,5 +28,13 @@ namespace Boxhead.Domain.Repositories
         /// </remarks>
         /// <seealso cref="ICloudGameDatasource.SaveGame(Game)"/>
         Task<IResult<Game, Error>> SaveGame(Game game);
+
+        /// <summary>
+        /// Deletes a game.
+        /// </summary>
+        /// <param name="game">The game to delete.</param>
+        /// <returns>Nothing or an error, if something went wrong.</returns>
+        /// <seealso cref="ICloudGameDatasource.DeleteGame(Game)"/>
+        Task<IResult<Error>> DeleteGame(Game game);
     }
 }
