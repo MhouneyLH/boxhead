@@ -2,6 +2,7 @@ using System;
 using Boxhead.Domain.Models;
 using Boxhead.Domain.Repositories;
 using Boxhead.Infrastructure;
+using Boxhead.Presentation.Game;
 using CandyCoded.env;
 using Supabase;
 using UnityEngine;
@@ -14,7 +15,12 @@ namespace Boxhead.Presentation.StartMenu
     /// </summary>
     public class StartMenuManager : MonoBehaviour
     {
-        public static void StartNewGame() => CustomSceneManager.LoadGameScene();
+        public static void StartNewGame()
+        {
+            
+            CustomSceneManager.LoadGameScene(Domain.Models.Game.CreateNew());
+        }
+
         public static void LoadGame() => CustomSceneManager.LoadLoadGameScene();
         public static void NavigateToSettings() => CustomSceneManager.LoadSettingsScene();
         public static void QuitGame() => Application.Quit();

@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc3bfcc9cdad1f3c95cd963bc51b2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameListParent: {fileID: 0}
+  gameListParent: {fileID: 1664896466}
   gameListItemPrefab: {fileID: 7077458262020273662, guid: 07b01e45d901b36909e147ecd4f5ba71, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

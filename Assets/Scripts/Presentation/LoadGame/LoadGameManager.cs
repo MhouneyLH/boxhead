@@ -2,12 +2,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Boxhead.Domain.Repositories;
 using Boxhead.Infrastructure;
+using Boxhead.Presentation.Game;
 using CandyCoded.env;
 using Supabase;
 using UnityEngine;
 
 namespace Boxhead.Presentation.LoadGame
 {
+    /// <summary>
+    /// Manages the load game scene.
+    /// </summary>
+    /// <remarks>
+    /// This scene is responsible for loading games from the cloud.
+    /// </remarks>
     public class LoadGameManager : MonoBehaviour
     {
         [SerializeField] private Transform gameListParent;
@@ -69,7 +76,7 @@ namespace Boxhead.Presentation.LoadGame
 
         private void OnGameSelected(Domain.Models.Game game)
         {
-            Debug.Log("Selected: " + game.Id);
+            CustomSceneManager.LoadGameScene(game);
         }
 
         private async void OnGameDeleted(Domain.Models.Game game)
