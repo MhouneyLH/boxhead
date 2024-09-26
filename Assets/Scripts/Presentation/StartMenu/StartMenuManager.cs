@@ -1,11 +1,6 @@
-using System;
-using Boxhead.Domain.Models;
 using Boxhead.Domain.Repositories;
-using Boxhead.Infrastructure;
-using Boxhead.Presentation.Game;
-using CandyCoded.env;
-using Supabase;
 using UnityEngine;
+using Zenject;
 
 namespace Boxhead.Presentation.StartMenu
 {
@@ -15,10 +10,22 @@ namespace Boxhead.Presentation.StartMenu
     /// </summary>
     public class StartMenuManager : MonoBehaviour
     {
-        public static void StartNewGame()
+        private IGameRepository _gameRepository;
+
+        [Inject]
+        public void Construct(IGameRepository gameRepository) => _gameRepository = gameRepository;
+
+        public async void StartNewGame()
         {
-            
-            CustomSceneManager.LoadGameScene(Domain.Models.Game.CreateNew());
+            var newGame = Domain.Models.Game.CreateNew();
+            var createdGame = await _gameRepository.SaveGame(newGame);
+            if (createdGame.IsFailure)
+            {
+                Debug.LogError("Failed to save new game: " + createdGame.Error);
+                return;
+            }
+
+            CustomSceneManager.LoadGameScene(createdGame.Value);
         }
 
         public static void LoadGame() => CustomSceneManager.LoadLoadGameScene();

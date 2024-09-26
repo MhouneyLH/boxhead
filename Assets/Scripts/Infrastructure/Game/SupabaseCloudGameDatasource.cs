@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Boxhead.Common;
 using Boxhead.Domain.Models;
+using Zenject;
 
 namespace Boxhead.Infrastructure
 {
@@ -10,10 +11,7 @@ namespace Boxhead.Infrastructure
     {
         private readonly Supabase.Client _supabaseClient;
 
-        public SupabaseCloudGameDatasource(Supabase.Client supabaseClient)
-        {
-            _supabaseClient = supabaseClient;
-        }
+        public SupabaseCloudGameDatasource(Supabase.Client supabaseClient) => _supabaseClient = supabaseClient;
 
         public async Task<List<Game>> GetAllGames()
         {

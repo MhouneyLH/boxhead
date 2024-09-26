@@ -1,11 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Boxhead.Domain.Repositories;
-using Boxhead.Infrastructure;
-using Boxhead.Presentation.Game;
-using CandyCoded.env;
-using Supabase;
 using UnityEngine;
+using Zenject;
 
 namespace Boxhead.Presentation.LoadGame
 {
@@ -22,15 +18,11 @@ namespace Boxhead.Presentation.LoadGame
 
         private IGameRepository _gameRepository;
 
+        [Inject]
+        public void Construct(IGameRepository gameRepository) => _gameRepository = gameRepository;
+
         private async void Awake()
         {
-            await Setup();
-            if (_gameRepository == null)
-            {
-                Debug.LogError("Game repository not initialized.");
-                return;
-            }
-
             var games = await _gameRepository.GetAllGames();
             if (games.IsFailure)
             {
@@ -39,27 +31,6 @@ namespace Boxhead.Presentation.LoadGame
             }
 
             FillGameList(games.Value);
-        }
-
-        private async Task Setup()
-        {
-            if (!env.TryParseEnvironmentVariable("SUPABASE_URL", out string url) ||
-                !env.TryParseEnvironmentVariable("SUPABASE_KEY", out string key))
-            {
-                Debug.LogError("Supabase URL or Key not found in environment variables.");
-                return;
-            }
-
-            SupabaseOptions options = new()
-            {
-                AutoConnectRealtime = true
-            };
-
-            Client supabase = new(url, key, options);
-            await supabase.InitializeAsync();
-
-            ICloudGameDatasource cloudGameDatasource = new SupabaseCloudGameDatasource(supabase);
-            _gameRepository = new GameRepositoryImpl(cloudGameDatasource);
         }
 
         private void FillGameList(List<Domain.Models.Game> games)
@@ -74,10 +45,7 @@ namespace Boxhead.Presentation.LoadGame
             }
         }
 
-        private void OnGameSelected(Domain.Models.Game game)
-        {
-            CustomSceneManager.LoadGameScene(game);
-        }
+        private static void OnGameSelected(Domain.Models.Game game) => CustomSceneManager.LoadGameScene(game);
 
         private async void OnGameDeleted(Domain.Models.Game game)
         {
