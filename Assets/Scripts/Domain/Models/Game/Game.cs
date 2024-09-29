@@ -1,4 +1,6 @@
 using System;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json.Converters;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Boxhead.Presentation.Game
 {
@@ -52,7 +53,7 @@ namespace Boxhead.Presentation.Game
 
             yield return new WaitForSeconds(SPAWN_INTERVAL_IN_S);
 
-            _enemiesToSpawnCount *= 2;
+            _enemiesToSpawnCount = Mathf.CeilToInt(_enemiesToSpawnCount * 1.5f);
             StartCoroutine(SpawnEnemies());
         }
 
