@@ -30,6 +30,14 @@ namespace Boxhead.Domain.Repositories
         Task<IResult<Game, Error>> SaveGame(Game game);
 
         /// <summary>
+        /// Updates a game.
+        /// </summary>
+        /// <param name="game">The game to update.</param>
+        /// <returns>The updated game or an error, if something went wrong.</returns>
+        /// <seealso cref="ICloudGameDatasource.UpdateGame(Game)"/>
+        Task<IResult<Game, Error>> UpdateGame(Game game);
+
+        /// <summary>
         /// Deletes a game.
         /// </summary>
         /// <param name="game">The game to delete.</param>

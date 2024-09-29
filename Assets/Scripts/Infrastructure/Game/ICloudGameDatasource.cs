@@ -26,6 +26,14 @@ namespace Boxhead.Infrastructure
         Task<Game> SaveGame(Game game);
 
         /// <summary>
+        /// Updates a game in the cloud.
+        /// </summary>
+        /// <param name="game">The game to update.</param>
+        /// <returns>The updated game.</returns>
+        /// <exception cref="CloudException">If something went wrong.</exception>
+        Task<Game> UpdateGame(Game game);
+
+        /// <summary>
         /// Deletes a game from the cloud.
         /// </summary>
         /// <param name="game">The game to delete.</param>

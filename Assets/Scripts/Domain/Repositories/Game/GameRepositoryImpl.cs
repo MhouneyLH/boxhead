@@ -54,5 +54,18 @@ namespace Boxhead.Domain.Repositories
                 return Result.Failure<Error>("Failed to delete game" + e.Message);
             }
         }
+
+        public async Task<IResult<Game, Error>> UpdateGame(Game game)
+        {
+            try
+            {
+                var updatedGame = await _cloudGameDatasource.UpdateGame(game);
+                return Result.Success<Game, Error>(updatedGame);
+            }
+            catch (CloudException e)
+            {
+                return Result.Failure<Game, Error>(Error.Create("Failed to update game", e.Message));
+            }
+        }
     }
 }

@@ -35,14 +35,15 @@ namespace Boxhead.Presentation.Game
             _enemiesToSpawnCount = 1;
         }
 
-        private void SpawnPlayer()
-        {
-            Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, playerParent);
-        }
+        private void SpawnPlayer() => Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, playerParent);
 
-        IEnumerator SpawnEnemies()
+        private IEnumerator SpawnEnemies()
         {
-            GameManager.Instance.NextRound();
+            var nextRoundTask = GameManager.Instance.NextRound();
+            while (!nextRoundTask.IsCompleted)
+            {
+                yield return null;
+            }
 
             for (int i = 0; i < _enemiesToSpawnCount; i++)
             {

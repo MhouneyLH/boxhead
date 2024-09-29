@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Boxhead.Common;
 using Boxhead.Domain.Models;
-using Zenject;
+using Supabase.Postgrest.Exceptions;
 
 namespace Boxhead.Infrastructure
 {
@@ -20,7 +20,7 @@ namespace Boxhead.Infrastructure
                 var response = await _supabaseClient.From<Game>().Get();
                 return response.Models;
             }
-            catch (Supabase.Postgrest.Exceptions.PostgrestException e)
+            catch (PostgrestException e)
             {
                 throw new CloudException("Getting all games in infrastructure layer: " + e.Message, e);
             }
@@ -34,7 +34,7 @@ namespace Boxhead.Infrastructure
                                                     .Insert(game);
                 return response.Model;
             }
-            catch (Supabase.Postgrest.Exceptions.PostgrestException e)
+            catch (PostgrestException e)
             {
                 throw new CloudException("Saving game in infrastructure layer: " + e.Message, e);
             }
@@ -48,9 +48,23 @@ namespace Boxhead.Infrastructure
                                      .Where(x => x.Id == game.Id)
                                      .Delete();
             }
-            catch (Supabase.Postgrest.Exceptions.PostgrestException e)
+            catch (PostgrestException e)
             {
                 throw new CloudException("Deleting game in infrastructure layer: " + e.Message, e);
+            }
+        }
+
+        public async Task<Game> UpdateGame(Game game)
+        {
+            try
+            {
+                var response = await _supabaseClient.From<Game>()
+                                                    .Update(game);
+                return response.Model;
+            }
+            catch (PostgrestException e)
+            {
+                throw new CloudException("Updating game in infrastructure layer: " + e.Message, e);
             }
         }
     }

@@ -1,5 +1,8 @@
+using System.Threading.Tasks;
+using Boxhead.Domain.Repositories;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Boxhead.Presentation.Game
 {
@@ -9,14 +12,19 @@ namespace Boxhead.Presentation.Game
     public class GameManager : MonoBehaviour
     {
         [Header("Controller")]
-        [SerializeField] Spawner spawner;
+        [SerializeField] private Spawner spawner;
 
         [Header("UI")]
-        [SerializeField] TMP_Text scoreText;
-        [SerializeField] TMP_Text roundText;
+        [SerializeField] private TMP_Text scoreText;
+        [SerializeField] private TMP_Text roundText;
 
         public static GameManager Instance { get; private set; }
         public static Domain.Models.Game CurrentGame { get; set; }
+
+        private IGameRepository _gameRepository;
+
+        [Inject]
+        public void Construct(IGameRepository gameRepository) => _gameRepository = gameRepository;
 
         private void Awake()
         {
@@ -44,10 +52,22 @@ namespace Boxhead.Presentation.Game
         /// <summary>
         /// Increments the current round and updates the UI.
         /// </summary>
-        public void NextRound()
+        public async Task NextRound()
         {
             CurrentGame.Data = CurrentGame.Data with { Round = CurrentGame.Data.Round + 1 };
             UpdateRoundText();
+
+            // only save every 5th round
+            if (CurrentGame.Data.Round % 5 != 0)
+            {
+                return;
+            }
+
+            var result = await _gameRepository.UpdateGame(CurrentGame);
+            if (result.IsFailure)
+            {
+                Debug.LogError("Failed to update the game: " + result.Error);
+            }
         }
 
         public void ResetGame() => CustomSceneManager.LoadStartMenuScene();
