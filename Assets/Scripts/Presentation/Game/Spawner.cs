@@ -21,6 +21,7 @@ namespace Boxhead.Presentation.Game
 
         private const float SPAWN_INTERVAL_IN_S = 10.0f;
         private const float SPAWN_BORDER_THRESHOLD_FACTOR = 0.8f;
+        private const float SPAWN_INCREMENT_FACTOR = 1.0f;
 
         public void StartSpawning()
         {
@@ -53,7 +54,7 @@ namespace Boxhead.Presentation.Game
 
             yield return new WaitForSeconds(SPAWN_INTERVAL_IN_S);
 
-            _enemiesToSpawnCount = Mathf.CeilToInt(_enemiesToSpawnCount * 1.5f);
+            _enemiesToSpawnCount = Mathf.CeilToInt(_enemiesToSpawnCount * SPAWN_INCREMENT_FACTOR);
             StartCoroutine(SpawnEnemies());
         }
 

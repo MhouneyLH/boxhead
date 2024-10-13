@@ -7,6 +7,6 @@ namespace Boxhead.Presentation.Game.Interfaces
     /// </summary>
     public interface IProjectile
     {
-        void Launch(Vector3 direction);
+        void Launch(Vector2 direction);
     }
 }

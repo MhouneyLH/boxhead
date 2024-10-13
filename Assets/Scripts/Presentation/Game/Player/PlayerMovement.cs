@@ -71,5 +71,8 @@ namespace Boxhead.Presentation.Game.Player
                 _animator.SetFloat(ANIMATOR_LAST_VERTICAL_NAME, _movementDirection.y);
             }
         }
+
+        public Vector2 GetLastMovementDirection() => new(_animator.GetFloat(ANIMATOR_LAST_HORIZONTAL_NAME),
+                                                         _animator.GetFloat(ANIMATOR_LAST_VERTICAL_NAME));
     }
 }

@@ -16,6 +16,13 @@ namespace Boxhead.Presentation.Game.Player
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private GameObject weapon;
 
+        private PlayerMovement _playerMovement;
+
+        private void Awake()
+        {
+            _playerMovement = GetComponent<PlayerMovement>();
+        }
+
         private void OnEnable()
         {
             // HINT: always take the CallbackContext as parameter for the method
@@ -32,11 +39,12 @@ namespace Boxhead.Presentation.Game.Player
         {
             if (bulletPrefab == null || weapon == null)
             {
+                Debug.LogWarning("BulletPrefab or Weapon not set in Player");
                 return;
             }
 
             GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
-            bullet.GetComponent<IProjectile>().Launch(transform.up);
+            bullet.GetComponent<IProjectile>().Launch(_playerMovement.GetLastMovementDirection());
         }
 
         public void TakeDamage(float damage)

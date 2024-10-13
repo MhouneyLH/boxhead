@@ -6,20 +6,20 @@ namespace Boxhead.Presentation.Game
     /// <summary>
     /// Represents a bullet that can be shot from a player.
     /// </summary>
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Collider2D))]
     public class Bullet : MonoBehaviour, IProjectile
     {
         [SerializeField] float speed = 10.0f;
         [SerializeField] float damage = 10.0f;
 
-        public void Launch(Vector3 direction)
+        public void Launch(Vector2 direction)
         {
-            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            Rigidbody2D rigidbody = GetComponent<Rigidbody2D>();
             rigidbody.velocity = speed * direction;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.GetComponent<Player.Player>())
             {
@@ -30,10 +30,7 @@ namespace Boxhead.Presentation.Game
             {
                 damageable.TakeDamage(damage);
                 Destroy(gameObject);
-                return;
             }
-
-            Debug.Log($"Bullet flying through Collider: {other.name}");
         }
     }
 }

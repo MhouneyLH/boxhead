@@ -14,7 +14,7 @@ namespace Boxhead.Presentation.Game.Enemy
         [SerializeField] private float damage = 5.0f;
         [SerializeField] private int scorePoints = 10;
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.layer == gameObject.layer)
             {
