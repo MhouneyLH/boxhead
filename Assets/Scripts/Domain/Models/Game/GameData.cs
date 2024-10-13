@@ -18,7 +18,6 @@ namespace Boxhead.Domain.Models
 
         public static GameData CreateNew() => new(0, Round.CreateFirstRound());
 
-        public bool IsGameOver() => !Round.Player.IsAlive();
         public GameData NextRound() => this with
         {
             Round = Round with

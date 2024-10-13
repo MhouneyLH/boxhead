@@ -18,9 +18,9 @@ namespace Boxhead.Presentation.LoadGame
         public void Initialize(Domain.Models.Game game)
         {
             _game = game;
-            createdAtText.text = _game.CreatedAt.ToString();
-            scoreText.text = _game.Data.Score.ToString();
-            roundText.text = _game.Data.Round.ToString();
+            createdAtText.text = $"Erstellt am: {_game.CreatedAt:dd.MM.yyyy}";
+            scoreText.text = $"Score: {_game.Data.Score}";
+            roundText.text = $"Runde: {_game.Data.Round.RoundNumber}";
         }
 
         public void Select() => OnSelect.Invoke(_game);
@@ -28,7 +28,7 @@ namespace Boxhead.Presentation.LoadGame
         public void Delete()
         {
             OnDelete.Invoke(_game);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 }

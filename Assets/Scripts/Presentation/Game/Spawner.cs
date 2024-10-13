@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Boxhead.Domain.Models;
 using Boxhead.Presentation.Game.Enemy;
@@ -20,14 +21,25 @@ namespace Boxhead.Presentation.Game
         [SerializeField] private Transform playerParent;
         [SerializeField] private Transform enemyParent;
 
-        private Round _currentRound = Round.CreateFirstRound();
+        public event Action OnRoundFinished = delegate { };
 
-        private const float SPAWN_INTERVAL_IN_S = 10.0f;
+        private Round _currentRound;
+
+        private const float BETWEEN_ROUNDS_DELAY_IN_S = 1.0f;
+        private const float SPAWN_ENEMY_DELAY_IN_S = 0.2f;
         private const float SPAWN_BORDER_THRESHOLD_FACTOR = 0.8f;
 
-        public void StartSpawning()
+        public void Initialize(Round round) => _currentRound = round;
+
+        public void StartFirstSpawn()
         {
             SpawnPlayer();
+            StartCoroutine(SpawnEnemies());
+        }
+
+        public void NextRound(Round round)
+        {
+            _currentRound = round;
             StartCoroutine(SpawnEnemies());
         }
 
@@ -36,7 +48,21 @@ namespace Boxhead.Presentation.Game
             StopAllCoroutines();
             DespawnEnemies();
             DespawnPlayers();
+
             _currentRound = Round.CreateFirstRound();
+        }
+
+        private IEnumerator SpawnEnemies()
+        {
+            yield return new WaitForSeconds(BETWEEN_ROUNDS_DELAY_IN_S);
+            for (int i = 0; i < _currentRound.EnemyCount; i++)
+            {
+                SpawnEnemy();
+                yield return new WaitForSeconds(SPAWN_ENEMY_DELAY_IN_S);
+            }
+
+            yield return new WaitUntil(() => enemyParent.childCount == 0);
+            OnRoundFinished.Invoke();
         }
 
         private void SpawnPlayer()
@@ -44,23 +70,6 @@ namespace Boxhead.Presentation.Game
             GameObject createdPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, playerParent);
             var playerComponent = createdPlayer.GetComponent<PlayerComponent>();
             playerComponent.Initialize(_currentRound.Player);
-        }
-
-        private IEnumerator SpawnEnemies()
-        {
-            var nextRoundTask = GameManager.Instance.NextRound();
-            while (!nextRoundTask.IsCompleted)
-            {
-                yield return null;
-            }
-
-            for (int i = 0; i < _currentRound.EnemyCount; i++)
-            {
-                SpawnEnemy();
-            }
-
-            yield return new WaitForSeconds(SPAWN_INTERVAL_IN_S);
-            StartCoroutine(SpawnEnemies());
         }
 
         private void SpawnEnemy()

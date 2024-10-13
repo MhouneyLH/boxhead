@@ -37,7 +37,17 @@ namespace Boxhead.Presentation.Game
             UpdateScoreText();
             UpdateRoundText();
 
-            spawner.StartSpawning();
+            spawner.Initialize(Round.CreateFirstRound());
+            spawner.StartFirstSpawn();
+        }
+
+        private void OnEnable() => spawner.OnRoundFinished += OnRoundFinished;
+        private void OnDisable() => spawner.OnRoundFinished -= OnRoundFinished;
+
+        private async void OnRoundFinished()
+        {
+            var round = await NextRound();
+            spawner.NextRound(round);
         }
 
         /// <summary>
@@ -53,16 +63,10 @@ namespace Boxhead.Presentation.Game
         /// <summary>
         /// Increments the current round and updates the UI.
         /// </summary>
-        public async Task<Round> NextRound()
+        private async Task<Round> NextRound()
         {
             CurrentGame.Data = CurrentGame.Data.NextRound();
             UpdateRoundText();
-
-            // only save every 5th round
-            if (CurrentGame.Data.Round.RoundNumber % 5 != 0)
-            {
-                return CurrentGame.Data.Round;
-            }
 
             var result = await _gameRepository.UpdateGame(CurrentGame);
             if (result.IsFailure)
@@ -75,6 +79,6 @@ namespace Boxhead.Presentation.Game
 
         public void ResetGame() => CustomSceneManager.LoadStartMenuScene();
         private void UpdateScoreText() => scoreText.text = CurrentGame.Data.Score.ToString();
-        private void UpdateRoundText() => roundText.text = "Round: " + CurrentGame.Data.Round.ToString();
+        private void UpdateRoundText() => roundText.text = "Round: " + CurrentGame.Data.Round.RoundNumber.ToString();
     }
 }

@@ -16,7 +16,7 @@ namespace Boxhead.Domain.Models
             Data = data;
         }
 
-        public static Game CreateNew() => new(Guid.NewGuid(), DateTime.UtcNow, new GameData(0, Round.CreateFirstRound()));
+        public static Game CreateNew() => new(Guid.NewGuid(), DateTime.UtcNow, GameData.CreateNew());
 
         [PrimaryKey("id")]
         public Guid Id { get; set; }
