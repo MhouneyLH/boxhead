@@ -5,42 +5,56 @@ namespace Boxhead.Presentation.Game.Enemy
     /// <summary>
     /// Responsible for moving enemies towards the player.
     /// </summary>
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Animator))]
     public class EnemyMovement : MonoBehaviour
     {
-        [SerializeField] float _speed = 1.0f;
+        [SerializeField] private float _speed = 1.0f;
 
-        private Rigidbody _rigidbody;
+        private Rigidbody2D _rigidbody;
+        private Animator _animator;
 
         private const string PLAYER_TAG = "Player";
+        private const string ANIMATOR_HORIZONTAL_NAME = "Horizontal";
+        private const string ANIMATOR_LAST_HORIZONTAL_NAME = "LastHorizontal";
+        private const string ANIMATOR_VERTICAL_NAME = "Vertical";
+        private const string ANIMATOR_LAST_VERTICAL_NAME = "LastVertical";
+
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _animator = GetComponent<Animator>();
         }
 
         private void FixedUpdate()
         {
-            Vector3 direction = GetDirectionToPlayer();
+            Vector2 direction = GetDirectionToPlayer();
             Move(direction);
-            Rotate(direction);
         }
 
-        Vector3 GetDirectionToPlayer()
+        private Vector2 GetDirectionToPlayer()
         {
             GameObject player = GameObject.FindGameObjectWithTag(PLAYER_TAG);
             return (player.transform.position - transform.position).normalized;
         }
 
-        private void Move(Vector3 direction)
+        private void Move(Vector2 direction)
         {
             _rigidbody.velocity = _speed * direction;
+            UpdateAnimation(direction);
         }
 
-        private void Rotate(Vector3 direction)
+        private void UpdateAnimation(Vector2 direction)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
+            _animator.SetFloat(ANIMATOR_HORIZONTAL_NAME, direction.x);
+            _animator.SetFloat(ANIMATOR_VERTICAL_NAME, direction.y);
+
+            if (direction != Vector2.zero)
+            {
+                _animator.SetFloat(ANIMATOR_LAST_HORIZONTAL_NAME, direction.x);
+                _animator.SetFloat(ANIMATOR_LAST_VERTICAL_NAME, direction.y);
+            }
         }
     }
 }

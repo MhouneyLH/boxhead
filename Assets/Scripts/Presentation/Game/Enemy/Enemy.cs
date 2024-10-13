@@ -8,8 +8,6 @@ namespace Boxhead.Presentation.Game.Enemy
     /// Could be a zombie, a soldier, a robot, etc.
     /// </summary>
     [RequireComponent(typeof(EnemyMovement))]
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Collider))]
     public class Enemy : MonoBehaviour, IDamageable
     {
         [SerializeField] private float health = 30.0f;
