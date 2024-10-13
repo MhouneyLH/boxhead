@@ -10,8 +10,10 @@ namespace Boxhead.Presentation.Game
     [RequireComponent(typeof(Collider2D))]
     public class Bullet : MonoBehaviour, IProjectile
     {
-        [SerializeField] float speed = 10.0f;
-        [SerializeField] float damage = 10.0f;
+        [SerializeField] private float speed = 10.0f;
+        [SerializeField] private float damage = 10.0f;
+
+        private const string OBSTACLE_TAG_NAME = "Obstacle";
 
         public void Launch(Vector2 direction)
         {
@@ -26,7 +28,11 @@ namespace Boxhead.Presentation.Game
                 return;
             }
 
-            if (other.TryGetComponent<IDamageable>(out var damageable))
+            if (other.CompareTag(OBSTACLE_TAG_NAME))
+            {
+                Destroy(gameObject);
+            }
+            else if (other.TryGetComponent<IDamageable>(out var damageable))
             {
                 damageable.TakeDamage(damage);
                 Destroy(gameObject);

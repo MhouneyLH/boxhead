@@ -43,7 +43,7 @@ namespace Boxhead.Presentation.Game.Player
                 return;
             }
 
-            GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
+            GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation, this.transform);
             bullet.GetComponent<IProjectile>().Launch(_playerMovement.GetLastMovementDirection());
         }
 
