@@ -1,4 +1,7 @@
 using System.Collections;
+using Boxhead.Domain.Models;
+using Boxhead.Presentation.Game.Enemy;
+using Boxhead.Presentation.Game.Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,11 +20,10 @@ namespace Boxhead.Presentation.Game
         [SerializeField] private Transform playerParent;
         [SerializeField] private Transform enemyParent;
 
-        private int _enemiesToSpawnCount = 1;
+        private Round _currentRound = Round.CreateFirstRound();
 
         private const float SPAWN_INTERVAL_IN_S = 10.0f;
         private const float SPAWN_BORDER_THRESHOLD_FACTOR = 0.8f;
-        private const float SPAWN_INCREMENT_FACTOR = 1.0f;
 
         public void StartSpawning()
         {
@@ -34,10 +36,15 @@ namespace Boxhead.Presentation.Game
             StopAllCoroutines();
             DespawnEnemies();
             DespawnPlayers();
-            _enemiesToSpawnCount = 1;
+            _currentRound = Round.CreateFirstRound();
         }
 
-        private void SpawnPlayer() => Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, playerParent);
+        private void SpawnPlayer()
+        {
+            GameObject createdPlayer = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity, playerParent);
+            var playerComponent = createdPlayer.GetComponent<PlayerComponent>();
+            playerComponent.Initialize(_currentRound.Player);
+        }
 
         private IEnumerator SpawnEnemies()
         {
@@ -47,14 +54,12 @@ namespace Boxhead.Presentation.Game
                 yield return null;
             }
 
-            for (int i = 0; i < _enemiesToSpawnCount; i++)
+            for (int i = 0; i < _currentRound.EnemyCount; i++)
             {
                 SpawnEnemy();
             }
 
             yield return new WaitForSeconds(SPAWN_INTERVAL_IN_S);
-
-            _enemiesToSpawnCount = Mathf.CeilToInt(_enemiesToSpawnCount * SPAWN_INCREMENT_FACTOR);
             StartCoroutine(SpawnEnemies());
         }
 
@@ -64,7 +69,9 @@ namespace Boxhead.Presentation.Game
             float height = Camera.main.orthographicSize * SPAWN_BORDER_THRESHOLD_FACTOR;
             Vector3 randomPosition = new(Random.Range(-width, width), Random.Range(-height, height), 0.0f);
 
-            Instantiate(enemyPrefab, randomPosition, Quaternion.identity, enemyParent);
+            GameObject createdEnemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity, enemyParent);
+            var enemyComponent = createdEnemy.GetComponent<EnemyComponent>();
+            enemyComponent.Initialize(_currentRound.EnemyConfiguration);
         }
 
         private void DespawnEnemies()

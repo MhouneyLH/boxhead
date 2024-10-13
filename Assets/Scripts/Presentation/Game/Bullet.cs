@@ -1,4 +1,5 @@
 using Boxhead.Presentation.Game.Interfaces;
+using Boxhead.Presentation.Game.Player;
 using UnityEngine;
 
 namespace Boxhead.Presentation.Game
@@ -23,7 +24,7 @@ namespace Boxhead.Presentation.Game
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.GetComponent<Player.Player>())
+            if (other.GetComponent<PlayerComponent>())
             {
                 return;
             }

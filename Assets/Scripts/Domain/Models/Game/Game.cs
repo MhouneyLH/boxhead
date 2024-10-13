@@ -1,6 +1,4 @@
 using System;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
 using Supabase.Postgrest.Attributes;
 using Supabase.Postgrest.Models;
 
@@ -18,7 +16,7 @@ namespace Boxhead.Domain.Models
             Data = data;
         }
 
-        public static Game CreateNew() => new(Guid.NewGuid(), DateTime.UtcNow, new GameData(0, 0));
+        public static Game CreateNew() => new(Guid.NewGuid(), DateTime.UtcNow, new GameData(0, Round.CreateFirstRound()));
 
         [PrimaryKey("id")]
         public Guid Id { get; set; }

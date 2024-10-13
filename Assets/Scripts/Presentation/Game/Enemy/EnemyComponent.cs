@@ -1,3 +1,4 @@
+using Boxhead.Domain.Models;
 using Boxhead.Presentation.Game.Interfaces;
 using UnityEngine;
 
@@ -8,11 +9,13 @@ namespace Boxhead.Presentation.Game.Enemy
     /// Could be a zombie, a soldier, a robot, etc.
     /// </summary>
     [RequireComponent(typeof(EnemyMovement))]
-    public class Enemy : MonoBehaviour, IDamageable
+    public class EnemyComponent : MonoBehaviour, IDamageable
     {
-        [SerializeField] private float health = 30.0f;
-        [SerializeField] private float damage = 5.0f;
-        [SerializeField] private int scorePoints = 10;
+        private EnemyConfiguration _enemyConfiguration;
+
+        private const int SCORE_POINT_FOR_ONE_ENEMY = 10;
+
+        public void Initialize(EnemyConfiguration enemyConfiguration) => _enemyConfiguration = enemyConfiguration;
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
@@ -23,17 +26,17 @@ namespace Boxhead.Presentation.Game.Enemy
 
             if (collision.gameObject.TryGetComponent(out IDamageable damageable))
             {
-                damageable.TakeDamage(damage);
+                damageable.TakeDamage(_enemyConfiguration.Damage);
             }
         }
 
         public void TakeDamage(float damage)
         {
-            health -= damage;
+            _enemyConfiguration = _enemyConfiguration with { Health = _enemyConfiguration.Health - damage };
 
-            if (health <= 0.0f)
+            if (!_enemyConfiguration.IsAlive())
             {
-                GameManager.Instance.AddScore(scorePoints);
+                GameManager.Instance.AddScore(SCORE_POINT_FOR_ONE_ENEMY);
                 Die();
             }
         }

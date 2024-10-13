@@ -1,3 +1,4 @@
+using System;
 using Supabase.Postgrest.Attributes;
 
 namespace Boxhead.Domain.Models
@@ -9,5 +10,27 @@ namespace Boxhead.Domain.Models
     /// These are stored in the Game class. <see cref="Game"/>.
     /// </summary> 
     public record GameData([property: Column("score")] int Score,
-                           [property: Column("round")] int Round);
+                           [property: Column("round")] Round Round)
+    {
+        private const float ENEMY_COUNT_INCREMENT_FACTOR = 1.1f;
+        private const float ENEMY_HEALTH_INCREMENT_FACTOR = 1.05f;
+        private const float ENEMY_SPEED_INCREMENT_FACTOR = 1.01f;
+
+        public static GameData CreateNew() => new(0, Round.CreateFirstRound());
+
+        public bool IsGameOver() => !Round.Player.IsAlive();
+        public GameData NextRound() => this with
+        {
+            Round = Round with
+            {
+                RoundNumber = Round.RoundNumber + 1,
+                EnemyCount = (int)MathF.Ceiling(Round.EnemyCount * ENEMY_COUNT_INCREMENT_FACTOR),
+                EnemyConfiguration = Round.EnemyConfiguration with
+                {
+                    Health = Round.EnemyConfiguration.Health * ENEMY_HEALTH_INCREMENT_FACTOR,
+                    Speed = Round.EnemyConfiguration.Speed * ENEMY_SPEED_INCREMENT_FACTOR
+                }
+            }
+        };
+    }
 }

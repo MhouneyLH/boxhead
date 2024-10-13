@@ -10,13 +10,16 @@ namespace Boxhead.Presentation.Game.Player
     /// The prefab should have a Player-Tag on it.
     /// </summary>
     [RequireComponent(typeof(PlayerMovement))]
-    public class Player : MonoBehaviour, IDamageable
+    public class PlayerComponent : MonoBehaviour, IDamageable
     {
-        [SerializeField] private float health = 100.0f;
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private GameObject weapon;
 
         private PlayerMovement _playerMovement;
+
+        private Domain.Models.Player _player;
+
+        public void Initialize(Domain.Models.Player player) => _player = player;
 
         private void Awake()
         {
@@ -49,9 +52,9 @@ namespace Boxhead.Presentation.Game.Player
 
         public void TakeDamage(float damage)
         {
-            health -= damage;
+            _player = _player with { Health = _player.Health - damage };
 
-            if (health <= 0.0f)
+            if (!_player.IsAlive())
             {
                 Die();
                 GameManager.Instance.ResetGame();
