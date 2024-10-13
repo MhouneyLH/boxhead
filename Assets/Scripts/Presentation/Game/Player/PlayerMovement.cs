@@ -7,34 +7,46 @@ namespace Boxhead.Presentation.Game.Player
     /// <summary>
     /// Responsible for moving the player.
     /// </summary>
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Animator))]
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private float speed = 5.0f;
 
-        private Rigidbody _rigidbody;
+        private Rigidbody2D _rigidbody;
+        private Animator _animator;
+        private InputAction _movementInputAction;
+
         private Vector2 _movementDirection = Vector2.zero;
+
+        private const string ANIMATOR_HORIZONTAL_NAME = "Horizontal";
+        private const string ANIMATOR_LAST_HORIZONTAL_NAME = "LastHorizontal";
+        private const string ANIMATOR_VERTICAL_NAME = "Vertical";
+        private const string ANIMATOR_LAST_VERTICAL_NAME = "LastVertical";
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody2D>();
+            _animator = GetComponent<Animator>();
+            _movementInputAction = InputSystemManager.Instance.GameSceneActions.Player.Move;
         }
 
         private void OnEnable()
         {
-            InputSystemManager.Instance.GameSceneActions.Player.Move.performed += OnMove;
-            InputSystemManager.Instance.GameSceneActions.Player.Move.canceled += OnMove;
+            _movementInputAction.performed += OnMove;
+            _movementInputAction.canceled += OnMove;
         }
 
         private void OnDisable()
         {
-            InputSystemManager.Instance.GameSceneActions.Player.Move.performed -= OnMove;
-            InputSystemManager.Instance.GameSceneActions.Player.Move.canceled -= OnMove;
+            _movementInputAction.performed -= OnMove;
+            _movementInputAction.canceled -= OnMove;
         }
 
         private void OnMove(InputAction.CallbackContext context)
         {
             _movementDirection = context.ReadValue<Vector2>();
+
         }
 
         private void FixedUpdate()
@@ -45,21 +57,19 @@ namespace Boxhead.Presentation.Game.Player
         private void Move()
         {
             _rigidbody.velocity = speed * _movementDirection;
-            Rotate();
+            UpdateAnimation();
         }
 
-        private void Rotate()
+        private void UpdateAnimation()
         {
-            // don't change rotation if the player is not moving
-            if (_movementDirection == Vector2.zero)
+            _animator.SetFloat(ANIMATOR_HORIZONTAL_NAME, _movementDirection.x);
+            _animator.SetFloat(ANIMATOR_VERTICAL_NAME, _movementDirection.y);
+
+            if (_movementDirection != Vector2.zero)
             {
-                return;
+                _animator.SetFloat(ANIMATOR_LAST_HORIZONTAL_NAME, _movementDirection.x);
+                _animator.SetFloat(ANIMATOR_LAST_VERTICAL_NAME, _movementDirection.y);
             }
-
-            float angle = Mathf.Atan2(_movementDirection.y, _movementDirection.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle - 90.0f);
         }
-
-        public Vector2 GetMovementDirection() => _movementDirection;
     }
 }

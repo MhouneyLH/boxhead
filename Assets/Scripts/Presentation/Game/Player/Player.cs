@@ -10,8 +10,6 @@ namespace Boxhead.Presentation.Game.Player
     /// The prefab should have a Player-Tag on it.
     /// </summary>
     [RequireComponent(typeof(PlayerMovement))]
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Collider))]
     public class Player : MonoBehaviour, IDamageable
     {
         [SerializeField] private float health = 100.0f;
@@ -32,6 +30,11 @@ namespace Boxhead.Presentation.Game.Player
 
         private void Shoot(InputAction.CallbackContext context)
         {
+            if (bulletPrefab == null || weapon == null)
+            {
+                return;
+            }
+
             GameObject bullet = Instantiate(bulletPrefab, weapon.transform.position, weapon.transform.rotation);
             bullet.GetComponent<IProjectile>().Launch(transform.up);
         }
